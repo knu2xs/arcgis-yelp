@@ -95,3 +95,7 @@ env/
 
 # exclude the docs build directory
 docs/
+
+# exclude any local configuration and environment settings
+.env
+config.ini
