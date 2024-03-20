@@ -14,13 +14,11 @@ dependencies:
   - pip
   - pytest
   - python
-  - python-dotenv
   - requests
   - pip:
     - autodocsumm
-    - azure-core
     - azure-cosmos
-    - azure-identity
+    - azure-functions
     - build
     - bump2version
     - placekey

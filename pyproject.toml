@@ -17,10 +17,9 @@ classifiers = [
 ]
 license = {file = "LICENSE"}
 dependencies = [
-    "arcgis>=2.2.0",
-    "azure-core",
     "azure-cosmos",
-    "requests"
+    "h3>=4.*",
+    "requests",
 ]
 
 [tool.setuptools.packages.find]

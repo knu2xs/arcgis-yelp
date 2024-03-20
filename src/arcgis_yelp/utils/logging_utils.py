@@ -16,7 +16,7 @@ if importlib.util.find_spec("pandas") is None:
 else:
     has_pandas = True
     import pandas as pd
-    __all__ = __all__ + ['log_pandas_df']
+    __all__ = __all__ + ['format_pandas_dataframe']
 
 
 class ArcpyHandler(logging.Handler):
@@ -76,7 +76,6 @@ class ArcpyHandler(logging.Handler):
 
 # setup logging
 def get_logger(
-        logger_name: Optional[str] = 'arcpy-logger',
         log_level: Optional[Union[str, int]] = 'INFO',
         logfile_pth: Union[Path, str] = None, propagate: bool = False
 ) -> logging.Logger:
@@ -96,11 +95,8 @@ def get_logger(
     * ``CRITICAL`` - A serious error, indicating that the program itself may be unable to continue running.
 
     Args:
-        logger_name: Name for logger. Default is 'arcpy-logger'.
         log_level: Logging level to use. Default is `'INFO'`.
         logfile_pth: Where to save the logfile.log if file output is desired.
-        propagate: Whether to propagate message up to any parent loggers. Defaults to ``False`` to avoid repeated
-            messages to ArcPy.
 
     .. code-block:: python
 
@@ -124,11 +120,8 @@ def get_logger(
     elif isinstance(log_level, int) and log_level not in log_int_lst:
         raise ValueError(f'If providing an integer for log_level, it must be one of the following, {log_int_lst}.')
 
-    # get a logger object instance
-    logger = logging.getLogger(logger_name)
-
-    # set propagation
-    logger.propagate = propagate
+    # get the default logger object instance to configure
+    logger = logging.getLogger()
 
     # set logging level
     if isinstance(log_level, str):
@@ -136,19 +129,18 @@ def get_logger(
     logger.setLevel(log_level)
 
     # configure formatting
-    log_frmt = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+    log_frmt = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
 
-    # if in an environment with ArcPy, add handler to bubble logging up to ArcGIS through ArcPy
+    # create handler to console
+    ch = logging.StreamHandler()
+    ch.setFormatter(log_frmt)
+    logger.addHandler(ch)
+
+    # if in an environment with ArcPy, add handler to bubble logging up to ArcGIS
     if has_arcpy:
         ah = ArcpyHandler()
         ah.setFormatter(log_frmt)
         logger.addHandler(ah)
-
-    # create handler to console if arcpy is not providing status
-    else:
-        ch = logging.StreamHandler()
-        ch.setFormatter(log_frmt)
-        logger.addHandler(ch)
 
     # if a path for the logfile is provided, log results to the file
     if logfile_pth is not None:
@@ -162,22 +154,19 @@ def get_logger(
         fh.setFormatter(log_frmt)
         logger.addHandler(fh)
 
-    # keep logging from bubbling up - keep messages just in these handlers
-    logger.propagate = False
-
     return logger
 
 
-def log_pandas_df(logger: logging.Logger, pandas_df: pd.DataFrame, title: str, line_tab_prefix='\t\t') -> None:
+def format_pandas_dataframe(pandas_df: pd.DataFrame, title: str, line_tab_prefix='\t\t\t\t') -> None:
     """
     Helper function facilitating outputting a :class:`Pandas DataFrame<pandas.DataFrame>` into a logfile. This typically
     is used for including descriptive statistics in logfile outputs.
 
     Args:
-        logger: Logger being used.
         pandas_df: Pandas ``DataFrame`` to be converted to a string and included in the logfile.
         title: String title describing the data frame.
-        line_tab_prefix: Optional string comprised of tabs (``\\t\\t``) to prefix each line with providing indentation.
+        line_tab_prefix: Optional string comprised of tabs (``\\t\\t\\t\\t``) to prefix each line with providing indentation.
     """
     log_str = line_tab_prefix.join(pandas_df.to_string(index=False).splitlines(True))
-    logger.info(f'{title}:\n{line_tab_prefix}{log_str}')
+    log_str = f'{title}:\n{line_tab_prefix}{log_str}'
+    return log_str

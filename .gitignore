@@ -70,7 +70,7 @@ target/
 .idea
 
 # VS Code
-.vscode/
+.vscode
 
 # Spyder
 .spyproject/
@@ -95,7 +95,7 @@ env/
 
 # exclude the docs build directory
 docs/
+.python_packages
 
-# exclude any local configuration and environment settings
-.env
-config.ini
+# any azure function settings
+**/local.settings.json

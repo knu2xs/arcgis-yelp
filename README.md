@@ -4,11 +4,12 @@ Accessing the Yelp API in conjunction with ArcGIS
 
 ## References
 
-[Geoservices Specification](http://geoservices.github.io) - basis for ArcGIS Feature Services
-[Get Started with Azure Cosmos](https://learn.microsoft.com/en-us/azure/cosmos-db/nosql/how-to-python-get-started?tabs=env-virtual%2Cazure-portal%2Cwindows)
-    - setting up and retrieving credentials
-
-
+* [Azure Cosmos Client](https://learn.microsoft.com/en-us/python/api/azure-cosmos/azure.cosmos.cosmos_client.cosmosclient?view=azure-python)
+* [Azure Cosmos DB Spatial](https://learn.microsoft.com/en-us/azure/cosmos-db/nosql/how-to-geospatial-index-query)
+* [Indexing Spatial Data in Cosmos DB NoSQL](https://learn.microsoft.com/en-us/azure/cosmos-db/nosql/how-to-geospatial-index-query#create-container-and-indexing-policy)
+* [Using spatial geometry data in Azure Cosmos DB](https://devblogs.microsoft.com/cosmosdb/spatial-geometry-data/)
+* [ST_INTERSECTS](https://learn.microsoft.com/en-us/azure/cosmos-db/nosql/query/st-intersects)
+* [Geoservices Specification](http://geoservices.github.io) - basis for ArcGIS Feature Services
 
 ## BumpVersion Cliff Notes
 

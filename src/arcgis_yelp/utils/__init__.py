@@ -1,9 +1,7 @@
-from . import arcpy_logger
-from .data_paths import DataPaths
+from . import logging_utils
 from .main import has_arcpy
 
 __all__ = [
-    'arcpy_logger',
-    'DataPaths',
+    'logging_utils',
     'has_arcpy'
 ]
